@@ -37,8 +37,27 @@
 
 // (Process ID = (0,1,...n-1) n=total number of threads) //
 
+// Global array structure to store word counts of each letter
+struct wordCount {
+int counter[26];
+pthread_mutex_t mutexCounter;
+
+int updatedCount;
+pthread_mutex_t mutexUpdated;
+pthread_cond_t condUpdated;
+}
+
+// Global structure to store thread id information
+struct threadCount{
+pthread_t threads;
+int clientID;
+//struct wordCount* shared; 
+}
+
+
 int main(int argc, char **argv)
 {
     LOG("--Server Started--");
     LOG("--Server Ended--");
+
 }
