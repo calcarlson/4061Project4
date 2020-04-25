@@ -33,7 +33,7 @@
 // 3) Each Acknowledge to client "ACK" (PID and path)    //
 // 4) Each "END" received from Client (PID and path)     //
 // 5) After receiving “END” from client (Thread id)      //
-// 6) Server Ends                                        //
+// 6) Server Ends                                       -XX
 
 // (Process ID = (0,1,...n-1) n=total number of threads) //
 
@@ -45,19 +45,46 @@ pthread_mutex_t mutexCounter;
 int updatedCount;
 pthread_mutex_t mutexUpdated;
 pthread_cond_t condUpdated;
-}
+};
 
 // Global structure to store thread id information
 struct threadCount{
 pthread_t threads;
 int clientID;
 //struct wordCount* shared; 
-}
+};
 
+void readFile(int clientID, char* fileName, int* numberOfFiles){
+    FILE* fd = fopen(fileName, "r");
+    printf("opening %d",fileName);
+
+}
 
 int main(int argc, char **argv)
 {
-    LOG("--Server Started--");
-    LOG("--Server Ended--");
+
+    printf(" -Server Started- \n");
+
+    if (argc > 2)
+    {
+        printf("Too many arguments, You must enter one argument \n");
+        exit(1);
+    }
+    else if (argc == 1)
+    {
+        printf("Too few arguments, You must enter one argument \n");
+        exit(1);
+    }
+    int threadCounter = argc;
+    //creating a thread struct for the thread counter
+    struct threadCount threads[threadCounter];
+    struct wordCount words;
+//set the array initialally to all zeroes before counting.
+    memset(words.count, 0, n*sizeof[words.count]);
+//create the number of threads defined by the threadcounter    
+    words.updatedCount=threadCounter;
+
+
+    printf(" -Server Ended- \n");
 
 }
