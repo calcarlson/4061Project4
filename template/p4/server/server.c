@@ -48,6 +48,12 @@ pthread_mutex_t mutexUpdated;
 pthread_cond_t condUpdated;
 };
 
+// Global message buffer to store type and content of messages
+struct msessageBuffer{
+    long messageType;
+    char messageText[512];
+} message;
+
 // Global structure to store thread id information
 struct threadCount{
 pthread_t threads;
@@ -55,15 +61,24 @@ int clientID;
 struct wordCount* shared; 
 };
 
-void* createProcess(void* arg){
+// Process to create threads and assign IDs for use in the client program
+void* createThread(void* arg){
     struct threadCount* process =(struct threadCount*) arg;
     struct wordCount* shared = process->shared;
     int clientID = process->clientID;
 
-    key_t key = ftok("queue",8);
+    key_t key = ftok("queue", 8);
     int msgq = msgget(key, IPC_CREAT | 0600);
-    char *fileName = msg.msg_text;
-    printf("ACK %d", fileName);
+    printf("path %d", fileName);
+
+    while(true){
+        char *fileName = message.messageText;
+        if(strcmp(filename, "END")==0){
+            break;
+        }
+        printf("Received path %s", fileName);
+
+    }
 
 }
 
