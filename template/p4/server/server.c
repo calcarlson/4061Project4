@@ -17,23 +17,25 @@
 #include <errno.h>
 #include <ctype.h>
 
-//  -------------------- MAIN GOAL -------------------- 
-// The aim of the server is to maintain a global array which 
-// stores the word count for each letter (how many words start 
-// with ‘a’, how many words start with ‘b’, etc.). This array 
-// will be updated by its threads, where each thread receives 
-// some paths to text files from a client process. The threads 
-// will modify the array to reflect the number of words starting 
-// with a letter in those files. When all the client processes 
-// have finished sending up requests, the server threads send 
-// the final counts of the global array to the clients.
+//  -------------------- MAIN GOAL --------------------  //
+// The aim of the server is to maintain a global array   //
+// which stores the word count for each letter (how many //
+// words start with ‘a’, how many words start with       //
+// ‘b’, etc.). This array will be updated by its threads,//
+// where each thread receives some paths to text files   //
+// from a client process. The threads will modify the    //
+// array to reflect the number of words starting with a  //
+// letter in those files. When all the client processes  //
+// have finished sending up requests, the server threads //
+// send the final counts of the global array to          //
+// the clients.                                          //
 
 //  ---------------- PRINT STATEMENTS -----------------  //
 // 1) Server Start                                      -XX
 // 2) Each file path received (PID and path)            -XX
-// 3) Each Acknowledge to client "ACK" (PID and path)    //
+// 3) Each Acknowledge to client "ACK" (PID and path)   -XX
 // 4) Each "END" received from Client (PID and path)     //
-// 5) After receiving “END” from client (Thread id)      //
+// 5) After receiving “END” from client (Thread id)     -XX
 // 6) Server Ends                                       -XX
 
 // (Process ID = (0,1,...n-1) n=total number of threads) //
@@ -42,7 +44,6 @@
 struct wordCount {
 int counter[26];
 pthread_mutex_t mutexCounter;
-
 int updatedCount;
 pthread_mutex_t mutexUpdated;
 pthread_cond_t condUpdated;
@@ -61,7 +62,8 @@ int clientID;
 struct wordCount* shared; 
 };
 
-// Process to create threads and assign IDs for use in the client program
+// Process to create threads and assign IDs for use in 
+// the client program
 void* createThread(void* arg){
     struct threadCount* process =(struct threadCount*) arg;
     struct wordCount* shared = process->shared;
@@ -77,11 +79,12 @@ void* createThread(void* arg){
             break;
         }
         printf("Received path %s", fileName);
-
     }
-
+    printf("received END");
 }
 
+// function to open a file and read in the first letter of 
+// each word line by line into the word array
 void readFile(int clientID, char* fileName, int* letterOfLine){
     FILE* fd = fopen(fileName, "r");
     printf("Opening received file at %d",fileName);
@@ -98,12 +101,11 @@ void readFile(int clientID, char* fileName, int* letterOfLine){
 }
 
 
-
 int main(int argc, char **argv)
 {
-
     printf(" -Server Started- \n");
 
+// Input argument validation
     if (argc > 2)
     {
         printf("Too many arguments, You must enter one argument \n");
@@ -115,7 +117,8 @@ int main(int argc, char **argv)
         exit(1);
     }
     int threadCounter = argc;
-    //creating a thread struct for the thread counter
+
+// Creating an instant of thread struct for the thread counter
     struct threadCount threads[threadCounter];
     struct wordCount words;
 
@@ -124,12 +127,10 @@ int main(int argc, char **argv)
         threads[i].shared = &shared;
         pthread_create(&threads[i].threads,NULL,&)
     }
+
 //set the array initialally to all zeroes before counting.
     memset(words.count, 0, n*sizeof[words.count]);
 //create the number of threads defined by the threadcounter    
     words.updatedCount=threadCounter;
-
-
     printf(" -Server Ended- \n");
-
 }
