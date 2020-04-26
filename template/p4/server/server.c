@@ -4,6 +4,7 @@
 // x500 : Carl5362 , Namht1999, Cunni536
 
 #include "server.h"
+#include <sys/types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,7 +30,7 @@
 
 //  ---------------- PRINT STATEMENTS -----------------  //
 // 1) Server Start                                      -XX
-// 2) Each file path received (PID and path)             //
+// 2) Each file path received (PID and path)            -XX
 // 3) Each Acknowledge to client "ACK" (PID and path)    //
 // 4) Each "END" received from Client (PID and path)     //
 // 5) After receiving “END” from client (Thread id)      //
@@ -51,14 +52,37 @@ pthread_cond_t condUpdated;
 struct threadCount{
 pthread_t threads;
 int clientID;
-//struct wordCount* shared; 
+struct wordCount* shared; 
 };
 
-void readFile(int clientID, char* fileName, int* numberOfFiles){
-    FILE* fd = fopen(fileName, "r");
-    printf("opening %d",fileName);
+void* createProcess(void* arg){
+    struct threadCount* process =(struct threadCount*) arg;
+    struct wordCount* shared = process->shared;
+    int clientID = process->clientID;
+
+    key_t key = ftok("queue",8);
+    int msgq = msgget(key, IPC_CREAT | 0600);
+    char *fileName = msg.msg_text;
+    printf("ACK %d", fileName);
 
 }
+
+void readFile(int clientID, char* fileName, int* letterOfLine){
+    FILE* fd = fopen(fileName, "r");
+    printf("Opening received file at %d",fileName);
+    while(true){
+        char* fileLine = NULL;
+        unsigned long n =0;
+        if(getline(&line, &n, fd) == -1){
+            printf("getline");
+            break;
+        }
+        letterOfLine[toupper(fileLine[0]) - 'A']++;
+    }
+    fclose(fd);
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -79,6 +103,12 @@ int main(int argc, char **argv)
     //creating a thread struct for the thread counter
     struct threadCount threads[threadCounter];
     struct wordCount words;
+
+    for(int i=0;i<threadCounter;i++){
+        threads[i].clientID=i;
+        threads[i].shared = &shared;
+        pthread_create(&threads[i].threads,NULL,&)
+    }
 //set the array initialally to all zeroes before counting.
     memset(words.count, 0, n*sizeof[words.count]);
 //create the number of threads defined by the threadcounter    
