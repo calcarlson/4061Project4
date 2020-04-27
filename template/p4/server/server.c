@@ -168,10 +168,12 @@ printf("testing threads");
         threads[i].clientID=i;
         threads[i].shared = &shared;
         pthread_create(&threads[i].threads,NULL,&createThread,&threads[i]);
+printf("testing thread creation");  
     }
 // Wait for the created threads to be completed by Client
     for(int i=0;i<threadCounter;i++){
         pthread_join(threads[i].threads,NULL);
+printf("testing thread join loop");
     }
 
 // End the created threads
