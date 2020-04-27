@@ -62,8 +62,8 @@ struct wordCount* shared;
 };
 
 // function to open a file and read in the first letter of
-// each word line by line into the word array
-void readFile(int clientID, char *fileName, int *letterOfLine)
+// each word line by line into an array
+void readFile(int clientID, char *fileName, int *output)
 {
     FILE *fd = fopen(fileName, "r");
     printf("Opening received file at %s", fileName);
@@ -75,7 +75,7 @@ void readFile(int clientID, char *fileName, int *letterOfLine)
             printf("getline");
             break;
         }
-        letterOfLine[toupper(fileLine[0]) - 'A']++;
+        output[toupper(fileLine[0]) - 'A']++;
     }
     fclose(fd);
 }
@@ -147,8 +147,11 @@ int main(int argc, char **argv)
         printf("Too few arguments, You must enter one argument \n");
         exit(1);
     }
+
+printf("testing threadCounter");
     int threadCounter = argc;
 // Creating an instant of thread struct for the thread counter
+printf("testing structs");
     struct threadCount threads[threadCounter];
     struct wordCount shared;
 // Set the array initialally to all zeroes before counting.
@@ -156,6 +159,7 @@ int main(int argc, char **argv)
 // Create the number of threads defined by threadCounter 
     shared.updatedCount = threadCounter;
 // Initialize the mutex objects required for server sync
+printf("testing threads");
     pthread_mutex_init(&shared.mutexCounter,NULL);
     pthread_mutex_init(&shared.mutexUpdated,NULL);
     pthread_cond_init(&shared.condUpdated,NULL);
@@ -176,4 +180,5 @@ int main(int argc, char **argv)
     pthread_cond_destroy(&shared.condUpdated);
 
     printf(" -Server Ended- \n");
+    
 }
