@@ -174,9 +174,9 @@ int main(int argc, char** argv) {
 		fputs(msgin.msg_text,fpt);
 		fclose(fpt);
 		
-	if(pnum==c-1){printf("Process%d terminating\n",pnum);exit(0);} else {wait(NULL);if (pnum!=0) {printf("Process%d terminating\n",pnum);exit(0);} } 
-	}
-	//msgctl(msgid,IPC_RMID,NULL);
+	if(pnum!=0){printf("Process%d terminating\n",pnum);exit(0);} else {for(int i=0;i<c;i++){wait(NULL);} }} 
+	
+	msgctl(msgid,IPC_RMID,NULL);
 	//exit(1);
 	
 	printf("Process%d terminating\n",pnum);	

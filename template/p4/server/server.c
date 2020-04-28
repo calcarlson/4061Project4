@@ -26,6 +26,7 @@ struct superbuffer{
 	int msgid;
 	int c;
 	int* arr;
+	int check;
 	};
 
 	
@@ -74,11 +75,14 @@ char final[200];
     printf("Thread %d %ld sending ACK on %s\n",pnum,pthread_self(),path);
     strcpy(msgout.msg_text,"ACK");
     if(msgsnd(msgid,(void*)&(msgout),sizeof(struct msg_buffer),0)==-1){printf("Send error %d\n",errno);exit(0);}
-    
+    pthread_mutex_lock(&lock);
     analz(path,arr);
-    //pthread_mutex_unlock(&lock);		
+    pthread_mutex_unlock(&lock);		
 	}
-    
+    pthread_mutex_lock(&lock);
+   --package->check;
+   pthread_mutex_unlock(&lock);
+   while(package->check!=0);
     for(int i=0;i<26;i++){ 
 		char tocat[10];
 		if(i!=25){sprintf(tocat,"%d#",arr[i]);} 
@@ -95,7 +99,7 @@ return;
 }
 
 int main(int argc, char** argv) {
-	printf("%d %d %d %d %d %d %d\n",EAGAIN,EACCES,EFAULT,EIDRM,EINTR,EINVAL,ENOMEM);
+//	printf("%d %d %d %d %d %d %d\n",EAGAIN,EACCES,EFAULT,EIDRM,EINTR,EINVAL,ENOMEM);
 	if (argc<2){printf("Not enough arg\n"); exit(1);}
 	//printf("%s\n",argv[1]);
 	int c=atoi(argv[1]);
@@ -107,7 +111,7 @@ int main(int argc, char** argv) {
    msgid=msgget(key, IPC_CREAT | 0666);
   int arr[26];
   for(int i=0;i<26;i++){arr[i]=0;}
-   struct superbuffer topass={msgid,c,arr} ;
+   struct superbuffer topass={msgid,c,arr,c} ;
     pthread_t thread[c];
    
     for (int i=0; i < c; i++) {
