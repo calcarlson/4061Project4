@@ -3,7 +3,6 @@
 // Name : Conrad Carlson , Nam Trinh, Jessica Cunningham
 // x500 : Carl5362 , Namht1999, Cunni536
 
-
 #include <stdio.h> 
 #include <sys/ipc.h> 
 #include <sys/msg.h> 
@@ -18,6 +17,7 @@
 
 #define MSG_SIZE 512
 pthread_mutex_t lock;
+
 // function to display time stamp
 void printtime() {
     time_t t = time(NULL);
@@ -30,6 +30,7 @@ struct msg_buffer {
     long msg_type;
     char msg_text[MSG_SIZE];
 };
+
 //struct to pass inside the thread 
 struct superbuffer {
     int msgid;
@@ -57,8 +58,7 @@ void analz(char * path, int * array) {
 }
 
 // function for the thread
-void
-function (void * arg) {
+void function (void * arg) {
 
     struct superbuffer * package = (struct superbuffer * ) arg;
     pthread_mutex_lock( & lock);
@@ -67,9 +67,9 @@ function (void * arg) {
     printf("Thread %d starting ...\n", pnum);
     int msgid = package -> msgid;
     struct msg_buffer msgin, msgout;
-    // set the in message type to be odd
+// set the in message type to be odd
     msgin.msg_type = pnum * 2 + 1;
-    // set the out message type to be even
+// set the out message type to be even
     msgout.msg_type = pnum * 2 + 2;
     char path[300];
     int * arr = package -> arr;
@@ -93,16 +93,16 @@ function (void * arg) {
             printf("Send error %d\n", errno);
             exit(0);
         }
-        // lock the array when performing text file analyzing
+// lock the array when performing text file analyzing
         pthread_mutex_lock( & lock);
         analz(path, arr);
         pthread_mutex_unlock( & lock);
     }
-    // lock variable check to count down til all threads receive END
+// lock variable check to count down til all threads receive END
     pthread_mutex_lock( & lock);
     --package -> check;
     pthread_mutex_unlock( & lock);
-    // if check is not 0 block the thread
+// if check is not 0 block the thread
     while (package -> check != 0);
     for (int i = 0; i < 26; i++) {
         char tocat[10];
@@ -114,7 +114,7 @@ function (void * arg) {
         strcat(final, tocat);
     }
     strcpy(msgout.msg_text, final);
-    //sending the final result
+//sending the final result
     msgsnd(msgid, (void * ) & (msgout), sizeof(struct msg_buffer), 0);
     printtime();
     printf("Thread %d %ld sending final result\n", pnum, pthread_self());

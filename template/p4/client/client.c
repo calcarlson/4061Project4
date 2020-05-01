@@ -1,3 +1,8 @@
+// Test Machine : csel-Vole-37
+// Date : 04/10/20
+// Name : Conrad Carlson , Nam Trinh, Jessica Cunningham
+// x500 : Carl5362 , Namht1999, Cunni536
+
 #include <stdio.h> 
 #include <sys/ipc.h> 
 #include <sys/msg.h> 
@@ -5,26 +10,30 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
- #include <dirent.h>
- #include <sys/wait.h> 
- #include <errno.h>
- #include <time.h>
+#include <dirent.h>
+#include <sys/wait.h> 
+#include <errno.h>
+#include <time.h>
 #define MSG_SIZE 512
+
 void printtime(){
 	time_t t = time(NULL);
   struct tm now = *localtime(&t);
   printf("[%d-%02d-%02d %02d:%02d:%02d]", now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec);
 	return;}
+
 void cuttail(char*a){
 	int i=0;
 	while(a[i]!='\n'){i++;}
 	a[i]='\0';
 	return;
 	}
+
 int len(int a){
 	int i=0;
 	while(true){a=a>>1;i++;if (a==0){return i;}}
 	}
+
 int processnum(pid_t *pidlist, int size){
 	int num=0;
 	int bit=0;
@@ -34,6 +43,7 @@ int processnum(pid_t *pidlist, int size){
 		}
 	return num;
 	}
+
 struct msg_buffer { 
     long msg_type; 
     char msg_text[MSG_SIZE]; 
@@ -91,13 +101,13 @@ int main(int argc, char** argv) {
 	int c=atoi(argv[2]);
 	key_t key=ftok("M",9);
 	int msgid= msgget(key, IPC_CREAT | 0666);
-	//Performing folder traversing
+//Performing folder traversing
 	printf("Traversal starting ...\n");
 	int txtcount=traverse(argv[1]);
 	FILE *fp[c];
 	
 	
-	//Putting down the result
+//Putting down the result
 	for (int i=0; i<c;i++){	
 		char path[100];
 		sprintf(path,"./ClientInput/Client%d.txt",(i%c));
@@ -110,16 +120,16 @@ int main(int argc, char** argv) {
 		
 	for (int i=0; i<c;i++){	fclose(fp[i]);}
 	int numbits=len(c);
-	//creating processes base on the number of times fork need to be called 
+//creating processes base on the number of times fork need to be called 
 	pid_t pid[numbits];
 	for (int i=0; i<numbits;i++)
 	{pid[i]=fork();}
-	//end the extra unecessary processes 
+//end the extra unecessary processes 
 	int pnum=processnum(pid,numbits);
 	if(pnum>=c) {exit(1);}
 	else{
 		struct msg_buffer msgin,msgout;
-		// Set in message type to even, out message type to odd
+// Set in message type to even, out message type to odd
 		msgin.msg_type=pnum*2+2;
 		msgout.msg_type=pnum*2+1;
 		int curid=getpid();
