@@ -22,7 +22,7 @@ Our program has two elements, the client and the server. The server receives fil
 
 # 4. Any assumptions outside this document
 
-We assumed that only one of the provided testcases would be input into the program at a time.
+In addition to the assumptions outlined in the project 4 document, we assumed that only one of the provided testcases (testCase1 or testCase2) would be input into the program at a single time.
 
 # 5. Team Members
 
