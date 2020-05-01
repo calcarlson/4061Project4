@@ -1,8 +1,11 @@
 # 4061Project4
 
 Test Machine: CSE Vole
+
 Date: 04/30/20
+
 Name: Cal Carlson, Nam Trinh, Jessica Cunningham
+
 x.500: carl5362, trinh064, cunni536
 
 # 1. The purpose
