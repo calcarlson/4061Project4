@@ -1,7 +1,7 @@
 // Test Machine : csel-Vole-37
 // Date : 04/10/20
 // Name : Conrad Carlson , Nam Trinh, Jessica Cunningham
-// x500 : Carl5362 , Namht1999, Cunni536
+// x500 : Carl5362 , trinh064, Cunni536
 
 #include <stdio.h> 
 #include <sys/ipc.h> 
@@ -15,25 +15,25 @@
 #include <errno.h>
 #include <time.h>
 #define MSG_SIZE 512
-
+// Display time stamp
 void printtime(){
 	time_t t = time(NULL);
   struct tm now = *localtime(&t);
   printf("[%d-%02d-%02d %02d:%02d:%02d]", now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec);
 	return;}
-
+// Remove the last character of a string
 void cuttail(char*a){
 	int i=0;
 	while(a[i]!='\n'){i++;}
 	a[i]='\0';
 	return;
 	}
-
+//find the bit length of a number
 int len(int a){
 	int i=0;
 	while(true){a=a>>1;i++;if (a==0){return i;}}
 	}
-
+//determine the process number , process 0, 1,2, base on pid
 int processnum(pid_t *pidlist, int size){
 	int num=0;
 	int bit=0;
@@ -50,7 +50,7 @@ struct msg_buffer {
 } ; 
 
 char * list[100];
-
+// check if a file is a txt file
 bool istext(char* path){
 	int i=2;
 	int f=0;
@@ -65,7 +65,7 @@ bool istext(char* path){
 	
 	return f==3;
 	}
-
+// traverse the folder for text files
 int traverse(char *path) {	 
 	static int index=0;
 	 if (path==NULL){path=".";}
