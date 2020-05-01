@@ -1,10 +1,17 @@
 # 4061Project4
 
+Test Machine: CSE Vole
+Date: 04/30/20
+Name: Cal Carlson, Nam Trinh, Jessica Cunningham
+x.500: carl5362, trinh064, cunni536
 
-# 1. The purpose 
+# 1. The purpose
+
 The purpose of our project is to create two seperate programs, a client and a server, which implement synchronization and inter process communication.
 
 # 2. How to compile the program
+
+To compile our program, use the provided makefile by using the make command in the terminal.
 
 # 3. What our program does
 
@@ -12,18 +19,20 @@ Our program has two elements, the client and the server. The server receives fil
 
 # 4. Any assumptions outside this document
 
+We assumed that only one of the provided testcases would be input into the program at a time.
+
 # 5. Team Members
 
-Cal Carlson Carl5362, 
+Cal Carlson carl5362, 
 
 Nam Trinh trinh064, 
 
-Jessica Cunningham Cunni536
+Jessica Cunningham cunni536
 
 # 6. Your and your partners individual contributions
 
 Cal Carlson: Server and Readme
 
-Nam Trinh: Client and Debugging
+Nam Trinh: Client and Debugging -> File Traversal
 
-Jessica Cunningham: Client and Debugging
+Jessica Cunningham: Client and Debugging -> Generating Client Processes
