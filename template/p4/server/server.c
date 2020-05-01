@@ -1,7 +1,7 @@
 // Test Machine : csel-Vole-37
 // Date : 04/10/20
 // Name : Conrad Carlson , Nam Trinh, Jessica Cunningham
-// x500 : Carl5362 , Namht1999, Cunni536
+// x500 : Carl5362 , trinh064, Cunni536
 
 //  -------------------- MAIN GOAL --------------------  //
 // The aim of the server is to maintain a global array   //
