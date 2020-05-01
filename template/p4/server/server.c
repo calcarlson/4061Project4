@@ -1,12 +1,15 @@
+// Test Machine : csel-Vole-37
+// Date : 04/10/20
+// Name : Conrad Carlson , Nam Trinh, Jessica Cunningham
+// x500 : Carl5362 , Namht1999, Cunni536
+
 
 #include <stdio.h> 
 #include <sys/ipc.h> 
 #include <sys/msg.h> 
-=======
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
->>>>>>> fd1f10163947a3b2c4d01e8a80f8441905f595ac
 #include <string.h>
 #include <stdlib.h>
 #include <pthread.h>
