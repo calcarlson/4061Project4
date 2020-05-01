@@ -52,7 +52,7 @@ bool istext(char* path){
 		if (path[i]=='.'){start=true;I=i+1;}
 		i++;
 		}
-	//printf("%d",f);
+	
 	return f==3;
 	}
 
@@ -63,7 +63,7 @@ int traverse(char *path) {
            int n;
          
            n = scandir(path, &namelist, NULL, alphasort);
-          // printf("                number of files inside    %d \n",n);
+          
            if (n == -1) {
                return -1;
            }
@@ -73,9 +73,9 @@ int traverse(char *path) {
           
           for (int i=2;i<n;i++) {
 			  char  childpath[300];
-			 // printf(" in for loop %s\n",namelist[i]->d_name);
+			
 			  sprintf(childpath,"%s/%s",path,namelist[i]->d_name);
-			 // printf("%s\n",childpath);
+			
 			 if (istext(childpath))
 			 {list[index]=(char*) calloc(100,sizeof(char*));
 			 strcpy(list[index],childpath);
@@ -91,48 +91,40 @@ int main(int argc, char** argv) {
 	int c=atoi(argv[2]);
 	key_t key=ftok("M",9);
 	int msgid= msgget(key, IPC_CREAT | 0666);
-	int check=1;
+	//Performing folder traversing
+	printf("Traversal starting ...\n");
 	int txtcount=traverse(argv[1]);
 	FILE *fp[c];
-	if (txtcount==0){printf("No text files \n");check=0; }
+	
+	
+	//Putting down the result
 	for (int i=0; i<c;i++){	
 		char path[100];
 		sprintf(path,"./ClientInput/Client%d.txt",(i%c));
 		fp[i]=fopen(path,"w+");
 		}
-	
 		for (int i=0; i<txtcount;i++){
-		
 			fputs(list[i],fp[i%c]);
 			fputs("\n",fp[i%c]);
 			}
-		//printf("%s",toserver);
+		
 	for (int i=0; i<c;i++){	fclose(fp[i]);}
 	int numbits=len(c);
-	//printf("numbit%d",c);
-	
-	//pid_t first;
-	//first=fork();
+	//creating processes base on the number of times fork need to be called 
 	pid_t pid[numbits];
 	for (int i=0; i<numbits;i++)
 	{pid[i]=fork();}
-	//pid[0]=fork();
-	//pid[1]=fork();
-	//pid[2]=fork();
+	//end the extra unecessary processes 
 	int pnum=processnum(pid,numbits);
 	if(pnum>=c) {exit(1);}
-	
 	else{
 		struct msg_buffer msgin,msgout;
+		// Set in message type to even, out message type to odd
 		msgin.msg_type=pnum*2+2;
 		msgout.msg_type=pnum*2+1;
 		int curid=getpid();
 		printf("Process %d starting...\n",pnum);
 	char line[100];
-	//sprintf(line,"%d\n",pnum);
-	//execl("/bin/echo","echo",line,(char*)NULL);
-	//time_t now;
-	
   	FILE *fpt;
 	char path[100];
 	sprintf(path,"./ClientInput/Client%d.txt",(pnum));
@@ -141,7 +133,7 @@ int main(int argc, char** argv) {
 	{	cuttail(line);
 		
 		strcpy(msgout.msg_text,line);
-		//if(strcmp(msgout.msg_text,"ACK")==0){printf("Sending ACK on tag %ld!!!!",msg[pnum].msg_type);while(1);}
+	
 	if(msgsnd(msgid,(void*)&msgout,sizeof(struct msg_buffer),0)==-1){
 		printf("Send error %d",errno);exit(0);
 		}
@@ -155,15 +147,13 @@ int main(int argc, char** argv) {
 	printf("Process %d %d received %s on %s\n",pnum,curid,msgin.msg_text,line);
 	}
 	fclose(fpt);
-	//msg[pnum].msg_type=pnum*2+1;
 	strcpy(msgout.msg_text,"END");
-	
 	if(msgsnd(msgid,(void*)&msgout,sizeof(struct msg_buffer),0)==-1)
 		{printf("Send error %d",errno);exit(0);}
 	printtime();
 	printf("Process %d %d sending %s\n",pnum,curid,msgout.msg_text);
 	
-	//msg[pnum].msg_type=pnum*2+2;
+	
 	if(msgrcv(msgid,(void*) &msgin,sizeof(struct msg_buffer),pnum*2+2,0)==-1)
 	{printf("Receive error %d",errno);exit(0);}
 	printtime();
@@ -173,28 +163,8 @@ int main(int argc, char** argv) {
 		fpt=fopen(tosave,"w+");
 		fputs(msgin.msg_text,fpt);
 		fclose(fpt);
-		
 	if(pnum!=0){printf("Process%d terminating\n",pnum);exit(0);} else {for(int i=0;i<c;i++){wait(NULL);} }} 
-	
 	msgctl(msgid,IPC_RMID,NULL);
-	//exit(1);
-	
 	printf("Process%d terminating\n",pnum);	
-/*
-	msg.msg_type=3;
-	strcpy(msg.msg_text,toserver);
-    key_t key=ftok("M",10); 
-    int msgid= msgget(key, IPC_CREAT | 0666);
-	msgsnd(msgid,(void*)&msg,sizeof(msg),0);
-	pid_t pid=fork();
-	if (pid==0){system("./server");exit(1);} // Put executable server file name here
-	else 
-		{wait(NULL);}
-		
-	msgrcv(msgid,(void*) &msg,sizeof(msg),3,0);
-	printf("On client %s\n",msg.msg_text);
-	msgctl(msgid,IPC_RMID,NULL);
-     
-    */
 return 0;
 }
