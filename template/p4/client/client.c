@@ -169,6 +169,7 @@ int main(int argc, char** argv) {
 	printtime();
 	printf("Process %d %d final receive:%s\n",pnum,curid,msgin.msg_text);
 	char tosave[100];
+		//Putting down the final result
 		sprintf(tosave,"./Output/Client%d_out.txt",pnum);
 		fpt=fopen(tosave,"w+");
 		fputs(msgin.msg_text,fpt);
