@@ -16,7 +16,7 @@ Our program has two elements, the client and the server. The server receives fil
 
 Cal Carlson Carl5362, 
 
-Nam Trinh Namht1999, 
+Nam Trinh trinh064, 
 
 Jessica Cunningham Cunni536
 
