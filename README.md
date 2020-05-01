@@ -20,7 +20,7 @@ To compile our program, use the provided makefile by using the make command in t
 
 Our program has two elements, the client and the server. The server receives file path arguments from the client and then creates threads based on the number of files within that file path and finds the total number of words for each letter of the alphabet and stores those statistics in an array which is returned to the client. The client is in charge of traversing the file structure and dividing the text files among the client processes.
 
-# 4. Any assumptions outside this document
+# 4. Any assumptions outside the project 4 document
 
 In addition to the assumptions outlined in the project 4 document, we assumed that only one of the provided testcases (testCase1 or testCase2) would be input into the program at a single time.
 
